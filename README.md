@@ -51,7 +51,7 @@ Please note: the above list is not exhaustive; rather, it's more of a minimal se
 
 The following is a list of projects included in this repo':
 
-1. [Getting Started](). This is the "Hello World!" of TensorFlow projects.
+1. [getting_started](). This is the "Hello World!" of TensorFlow projects.
 
 # Tutorials
 
