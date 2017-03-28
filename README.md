@@ -71,7 +71,7 @@ The following is a list of steps to follow to get started with using this repo':
 
 At this point, everything should compile and run.
 
-Please note: you can also run main.py from within Code by typing 'F1', then 'run' if you define the program as a Jupyter notebook.
+Please note: you can also run main.py from within Code by typing 'F1', then 'run' (I've made the program a Jupyter notebook).
 
 # Contributions
 
