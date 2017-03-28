@@ -52,5 +52,6 @@ If you feel like you can make a contribution; please, feel free to make a reques
 
 # Credits
 
-Dr. Frazer K. Noble 
+Dr. Frazer K. Noble. 
+ 
 Follow me on Twitter at [@FrazerNoble](https://twitter.com/FrazerNoble).
