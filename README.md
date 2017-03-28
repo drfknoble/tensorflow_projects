@@ -30,7 +30,8 @@ I have used the following tools and libraries to create and run each project:
 1. [Anaconda 4.3.1](https://www.continuum.io/).
 1. [Nvidia CUDA](https://developer.nvidia.com/cuda-zone).
 1. [Nvidia CUDNN](https://developer.nvidia.com/cudnn).
-1. [Microsoft Visual Studio Code](https://code.visualstudio.com/).
+1. [Microsoft Visual Studio Code (Code)](https://code.visualstudio.com/).
+1. [Code Python Extension](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python).
 
 Each project has been compiled and run on PCs running Windows 7 x64 and Windows 10 x64 to ensure they work.
 
@@ -63,11 +64,14 @@ The following is a list of tutorials related to this repo':
 The following is a list of steps to follow to get started with using this repo':
 
 1. Clone the tensorflow_projects repo'.
-1. Install Anaconda and create a Python 3.5 environment for TensorFlow, e.g. 'tf' for TensorFlow running on a CPU or 'tf-gpu' for TensorFlow running on a GPU. Install jupyer, matplotlib, scipy, and tensorflow/tensorflow-gpu into the environment.
-1. Install Microsoft Visual Studio Code.
-1. Open a Windows command line and activate the Anaconda environment. 
-1. Open Microsoft Visual Studio Code and open the project's main.py.
-1. Using the built-in console, run 'python main.py'.
+1. Install Anaconda and create a Python 3.5 environment for TensorFlow, e.g. 'tf' for TensorFlow running on a CPU or 'tf-gpu' for TensorFlow running on a GPU. Activate the environment and install jupyer, matplotlib, scipy, and tensorflow/tensorflow-gpu.
+1. Install Code and the Python extension. 
+1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the project's main.py.
+1. Use Code's built-in console and type 'python main.py' to run the main.py.
+
+At this point, everything should compile and run.
+
+Please note: you can also run main.py from within Code by typing 'F1', then 'run' if you define the program as a Jupyter notebook.
 
 # Contributions
 
