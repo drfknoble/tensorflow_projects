@@ -27,7 +27,7 @@ P.S. If you'd like to hear about new projects and tutorials, why not follow me o
 I have used the following tools and libraries to create and run each project:
 
 1. [TensorFlow](https://www.tensorflow.org/).
-1. [Anaconda 4.3.1](https://www.continuum.io/).
+1. [Anaconda](https://www.continuum.io/).
 1. [Nvidia CUDA](https://developer.nvidia.com/cuda-zone).
 1. [Nvidia CUDNN](https://developer.nvidia.com/cudnn).
 1. [Microsoft Visual Studio Code (Code)](https://code.visualstudio.com/).
