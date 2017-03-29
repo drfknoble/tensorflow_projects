@@ -57,7 +57,7 @@ The following is a list of projects included in this repo':
 
 The following is a list of tutorials related to this repo':
 
-1. [How to Install TensorFlow on Windows]().
+1. [Getting Started with TensorFlow](https://www.youtube.com/watch?v=Q-FF_0NAT3s).
 
 # Installation
 
