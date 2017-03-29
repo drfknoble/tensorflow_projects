@@ -1,6 +1,6 @@
 # saving_and_loading
 
-In this project, I show you how to save and load a TensorFlow graph. Here, we'll extend the work done in the [visualisation]() project.
+In this project, I show you how to save and load a TensorFlow graph. Here, we'll extend the work done in the [visualisation](https://github.com/FKNoble/tensorflow_projects/tree/master/visualisation) project.
 
 # Table of Contents
 
