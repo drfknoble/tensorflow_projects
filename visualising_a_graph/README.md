@@ -1,4 +1,4 @@
-# visualisation
+# visualising_a_graph
 
 In this project, I show you how to visualise a TensorFlow graph. We'll start simple and show how we can make a basic graph, compute some basic equations, then display what our graph looks like via TensorBoard.
 
@@ -33,7 +33,7 @@ The following is a list of steps to follow to get started with using this projec
 1. Clone the tensorflow_projects repo'.
 1. Install Anaconda and create a Python 3.5 environment for TensorFlow, e.g. 'tf' for TensorFlow running on a CPU or 'tf-gpu' for TensorFlow running on a GPU. Activate the environment and install jupyer, matplotlib, scipy, and tensorflow/tensorflow-gpu.
 1. Install Code and the Python extension. 
-1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the visualisation directory. Open main.py.
+1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the visualising_a_graph directory. Open main.py.
 1. Use Code's built-in console and type 'python main.py' to run the script.
 
 At this point, everything should compile and run.
@@ -42,7 +42,7 @@ Please note: you can also run main.py from within Code by typing 'F1', then 'run
 
 # Usage 
 
-To run the main.py script, browse to visualisation directory and run the following command in a command line window:
+To run the main.py script, browse to visualising_a_graph directory and run the following command in a command line window:
 
     python main.py
 
