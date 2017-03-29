@@ -51,13 +51,13 @@ Please note: the above list is not exhaustive; rather, it's more of a minimal se
 
 The following is a list of projects included in this repo':
 
-1. [getting_started](). This is the "Hello World!" of TensorFlow projects.
+1. [getting_started](https://github.com/FKNoble/tensorflow_projects/tree/master/getting_started). This is the "Hello World!" of TensorFlow projects.
 
 # Tutorials
 
 The following is a list of tutorials related to this repo':
 
-1. [How to Install TensorFlow on Windows]().
+1. [Getting Started with TensorFlow](https://www.youtube.com/watch?v=Q-FF_0NAT3s). This is a video that shows how to install the tools necessary to get started with TensorFlow and write your first program.
 
 # Installation
 
