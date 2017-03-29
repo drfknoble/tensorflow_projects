@@ -57,7 +57,7 @@ The following is a list of projects included in this repo':
 
 The following is a list of tutorials related to this repo':
 
-1. [Getting Started with TensorFlow](https://www.youtube.com/watch?v=Q-FF_0NAT3s).
+1. [Getting Started with TensorFlow](https://www.youtube.com/watch?v=Q-FF_0NAT3s). This is a video that shows how to install the tools necessary to get started with TensorFlow and write your first program.
 
 # Installation
 
