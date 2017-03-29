@@ -39,14 +39,14 @@ with tf.Session() as s:
     # Merge all summaries together.
     merged = tf.summary.merge_all()
 
-    # Evaluate the graph, providing A = 1.0 and B = 2.0
+    # Evaluate the graph, providing A = 1.0 and B = 2.0.
     feed_dict = {A: 1.0, B: 2.0}
     summary, ans = s.run([merged, C], feed_dict)
 
-    # Write summary to ./logs
+    # Write summary to ./logs.
     summary_writer.add_summary(summary, 0)
 
-    # Display answer on the console
+    # Display answer on the console.
     print(ans)
 
     # To visualise output via TensorBoard, run: 'tensorboard --logdir=./logs'
@@ -59,10 +59,15 @@ with tf.Session() as s:
 
 with tf.Session() as l:
 
-    # Load the model from './model'
+    # Here is a new session; which, is distinct from session s. So we don't have
+    # access to the graph, as evaluated in s. The point is, the only way we have a graph
+    # to evaluate is if we load it successfully from the meta file.
+
+    # Load the model from './model'.
     loader = tf.train.import_meta_graph('./model/main.meta')
     loader.restore(l, './model/main-0')
 
     ans = l.run(C, {A: 2.0, B: 5.0})
 
+    # Display answer on the console.
     print(ans)
