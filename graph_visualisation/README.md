@@ -1,4 +1,4 @@
-# getting_started
+# graph_visualisation
 
 In this project, I show you how to visualise a TensorFlow graph. We'll start simple and show how we can make a basic graph, compute some basic equations, then display what our graph looks like via TensorBoard.
 
