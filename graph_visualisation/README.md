@@ -46,7 +46,7 @@ To run the main.py script, browse to getting_started directory and run the follo
 
     python main.py
 
-To run TensorBoard, run the following command:
+To run TensorBoard, run the following command an browse to 'localhost:6006':
 
     tensorboard --logdir=./logs
 
