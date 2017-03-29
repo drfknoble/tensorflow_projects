@@ -52,9 +52,9 @@ To run TensorBoard, run the following command:
 
 You should see the following outputs:
 
-![Scalars](./data/output/tb_scalars.png)
+![Scalars](./data/output/tb_scalars.PNG)
 
-![Graph](./data/output/tb_graphs.png)
+![Graph](./data/output/tb_graphs.PNG)
 
 # Contributions
 
