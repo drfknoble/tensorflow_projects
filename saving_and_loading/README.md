@@ -12,7 +12,6 @@ In this project, I show you how to save and load a TensorFlow graph. Here, we'll
 
 # Requirements
 
-
 I have used the following tools and libraries to create and run each project:
 
 1. [TensorFlow](https://www.tensorflow.org/).
@@ -33,7 +32,7 @@ The following is a list of steps to follow to get started with using this projec
 1. Clone the tensorflow_projects repo'.
 1. Install Anaconda and create a Python 3.5 environment for TensorFlow, e.g. 'tf' for TensorFlow running on a CPU or 'tf-gpu' for TensorFlow running on a GPU. Activate the environment and install jupyer, matplotlib, scipy, and tensorflow/tensorflow-gpu.
 1. Install Code and the Python extension. 
-1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the graph_visualisation directory. Open main.py.
+1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the saving_and_loading directory. Open main.py.
 1. Use Code's built-in console and type 'python main.py' to run the script.
 
 At this point, everything should compile and run.
@@ -42,7 +41,7 @@ Please note: you can also run main.py from within Code by typing 'F1', then 'run
 
 # Usage 
 
-To run the main.py script, browse to getting_started directory and run the following command in a command line window:
+To run the main.py script, browse to saving_and_loading directory and run the following command in a command line window:
 
     python main.py
 
@@ -51,8 +50,6 @@ To run TensorBoard, run the following command an browse to 'localhost:6006':
     tensorboard --logdir=./logs
 
 You should see the following outputs:
-
-![Scalars](./data/output/tb_scalars.PNG)
 
 ![Graph](./data/output/tb_graphs.PNG)
 
