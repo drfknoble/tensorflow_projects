@@ -28,26 +28,9 @@ def make_example(feature, label=None):
     '''Make example from feature'''
 
     example = tf.train.Example(features=tf.train.Features(feature={
-        'A': int_feature(feature[0]),
-        'B': int_feature(feature[1]),
+        'x': float_feature(feature[0]),
+        'y': float_feature(feature[1]),
     }))
-
-    return example
-
-# Reads a TFRecord file and parses it for the elements we are after.
-def read_record(filename_queue):
-    '''Reads a TFRecord'''
-
-    reader = tf.TFRecordReader()
-    _, serialised_example = reader.read(filename_queue)
-
-    example = tf.parse_single_example(
-        serialised_example,
-        features={
-            'A': tf.FixedLenFeature([], tf.int64),
-            'B': tf.FixedLenFeature([], tf.int64),
-        }
-    )
 
     return example
 
@@ -61,42 +44,31 @@ def input_pipeline(filenames, num_epochs=1):
         shuffle=False
     )
 
-    record = read_record(filename_queue)
+    reader = tf.TextLineReader()
+    _, value = reader.read(filename_queue)
 
-    return record
+    x, y = tf.decode_csv(value, record_defaults=[[0.0], [0.0]])
 
-# Directory and name of the record file.
-data_dir = './reading_and_writing_data/data/output/'
-record_file = data_dir + 'record.tfrecords'
+    return [x, y]
+
+# Directory and name of the csv and record file.
+input_dir = './reading_and_writing_data/data/input/'
+output_dir = './reading_and_writing_data/data/output/'
+
+csv_file = input_dir + 'csv_data.csv'
+record_file = output_dir + 'csv_record.tfrecords'
 
 # Creates a graph to read in a file.
-record_in = input_pipeline([record_file], 1)
+csv_data = input_pipeline([csv_file], 1)
 
 init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
 
 with tf.Session() as s:
 
-    # Initialises global and local variables.
+    # Initialise global and local variables.
     s.run(init)
 
-    # Sample data.
-    feature = [1, 2]
-
-    # Create an example.
-    example = make_example(feature)
-
-    # Print record to screen.
-    print(example)
-
-    # Write example to record file.
     writer = tf.python_io.TFRecordWriter(record_file)
-    writer.write(example.SerializeToString())
-    writer.close()
-
-with tf.Session() as l:
-
-    # Initialise global and local variables.
-    l.run(init)
 
     # Create a thread, which will read in the record file and extract examples.
     coord = tf.train.Coordinator()
@@ -105,12 +77,17 @@ with tf.Session() as l:
     try:
         while not coord.should_stop():
 
-            r = l.run(record_in)
+            # Sample data.
+            feature = s.run(csv_data)
 
-            A = l.run(tf.cast(r['A'], tf.int64))
-            B = l.run(tf.cast(r['B'], tf.int64))
+            # Create an example.
+            example = make_example(feature)
 
-            print(A, B)
+            # Print record to screen.
+            print(example)
+
+            # Write example to record file.
+            writer.write(example.SerializeToString())
 
     except tf.errors.OutOfRangeError:
         print('EoF')
@@ -118,3 +95,5 @@ with tf.Session() as l:
         coord.request_stop()
 
     coord.join(threads)
+
+    writer.close()
