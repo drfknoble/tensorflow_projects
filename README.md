@@ -52,6 +52,9 @@ Please note: the above list is not exhaustive; rather, it's more of a minimal se
 The following is a list of projects included in this repo':
 
 1. [getting_started](https://github.com/FKNoble/tensorflow_projects/tree/master/getting_started). This is the "Hello World!" of TensorFlow projects.
+1. [Visualising a Graph](https://github.com/FKNoble/tensorflow_projects/tree/master/visualising_a_graph). This project shows you how to use TensorBoard to visualise a graph and variables.
+1. [Saving and Loading a Graph](https://github.com/FKNoble/tensorflow_projects/tree/master/saving_and_loading_a_graph). This project shows you how to save and load a graph.
+1. [Reading and Writing Data](https://github.com/FKNoble/tensorflow_projects/tree/master/reading_and_writing_data). This project shows you how to read and write data from and to a TFRecord. 
 
 # Tutorials
 
