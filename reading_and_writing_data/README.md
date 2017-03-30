@@ -1,6 +1,6 @@
 # reading_and_writing_data
 
-In this project, I show you how to read and write data to and from a TensorFlow graph.
+In this project, I show you how to read and write data to and from a TensorFlow graph. I've also included two additional files, [png_to_record.py](./png_to_record) and [record_to_png](./record_to_png) and both extend the work of [main.py](./main.py). png_to_record looks for images in a directory and converts each into an example, which is written to a TFRecord file. record_to_png parses the TFRecord file and converts each example into a .PNG.
 
 # Table of Contents
 
