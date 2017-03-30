@@ -5,24 +5,25 @@ Reading and Writing Data
 # pylint: disable=C0103
 # pylint: disable=E0401
 
+# Import 'tensorflow' to get access to the TensorFlow library.
 import tensorflow as tf
 
-
+# Adds a float_list feature to an example.
 def float_feature(value):
     '''Create float_list-based feature'''
     return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
 
-
+# Adds a int64_list feature to an example.
 def int_feature(value):
     '''Create float_list-based feature'''
     return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
 
-
+# Adds a bytes_list feature to an example.
 def bytes_feature(value):
     '''Create bytes_list-based feature'''
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-
+# Makes an example using either a float, int, or bytes list as an element.
 def make_example(feature, label=None):
     '''Make example from decoded jpeg'''
 
@@ -33,6 +34,7 @@ def make_example(feature, label=None):
 
     return example
 
+# Reads a TFRecord file and parses it for the elements we are after.
 def read_record(filename_queue):
     '''Reads a TFRecord'''
 
@@ -49,6 +51,7 @@ def read_record(filename_queue):
 
     return example
 
+# Pipeline for reading in a file.
 def input_pipeline(filenames, num_epochs=1):
     """Input pipeline"""
 
@@ -62,34 +65,44 @@ def input_pipeline(filenames, num_epochs=1):
 
     return record
 
+# Directory and name of the record file.
 data_dir = './reading_and_writing_data/data/output/'
 record_file = data_dir + 'record.tfrecords'
 
+# Creates a graph to read in a file.
 record_in = input_pipeline([record_file], 1)
 
 init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
 
 with tf.Session() as s:
 
+    # Initialises global and local variables.
+    s.run(init)
+
+    # Sample data.
     feature = [1, 2]
 
+    # Create an example.
     example = make_example(feature)
 
+    # Print record to screen.
     print(example)
 
+    # Write example to record file.
     writer = tf.python_io.TFRecordWriter(record_file)
-
     writer.write(example.SerializeToString())
+    writer.close()
 
 with tf.Session() as l:
 
+    # Initialise global and local variables.
     l.run(init)
 
+    # Create a thread, which will read in the record file and extract examples.
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
 
     try:
-
         while not coord.should_stop():
 
             r = l.run(record_in)

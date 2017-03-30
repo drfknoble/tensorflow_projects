@@ -45,6 +45,10 @@ To run the main.py script, browse to reading_and_writing_data directory and run 
 
     python main.py
 
+You should see the following outputs:
+
+![Output](./data/output/Capture.PNG)
+
 # Contributions
 
 If you feel like you can make a contribution; please, feel free to make a request.
