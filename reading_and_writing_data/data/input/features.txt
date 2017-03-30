@@ -1,0 +1,2 @@
+./reading_and_writing_data/data/input/feature_0.png
+./reading_and_writing_data/data/input/label_0.png
