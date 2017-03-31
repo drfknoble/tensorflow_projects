@@ -47,8 +47,16 @@ def read_record(filename_queue):
 
     return example
 
+def extract_example_data(example):
+    '''Extract record'''
+
+    feature = tf.cast(example['x'], tf.float32)
+    label = tf.cast(example['y'], tf.float32)
+
+    return feature, label
+
 # Here, we define a function that reads a TFRecord file.
-def input_pipeline(filenames, num_epochs=1):
+def input_pipeline(filenames, num_epochs=1, batch_size=1):
     """Read a TFRecord"""
 
     filename_queue = tf.train.string_input_producer(
@@ -57,9 +65,19 @@ def input_pipeline(filenames, num_epochs=1):
         shuffle=False
     )
 
-    record = read_record(filename_queue)
+    example = read_record(filename_queue)
 
-    return record
+    feature, label = extract_example_data(example)
+
+    min_after_dequeue = 10000
+    capacity = min_after_dequeue + 3 * batch_size
+    feature_batch, label_batch = tf.train.batch(
+        [feature, label],
+        batch_size=batch_size,
+        capacity=capacity,
+        dynamic_pad=True)
+
+    return feature_batch, label_batch
 
 # Here, we define a function that writes a TFRecord file.
 def output_pipeline(filenames, num_epochs=1):
@@ -87,16 +105,19 @@ csv_file = input_dir + 'csv_data.csv'
 record_file = output_dir + 'csv_record.tfrecords'
 
 # Here, we create handles for reading and writing TFRecord files.
+num_epochs = 1
+batch_size = 2
+
 csv_data = output_pipeline([csv_file], 1)
-record = input_pipeline([record_file], 1)
+record = input_pipeline([record_file], num_epochs, batch_size)
 
 # Here, we define our graph: C = A + B.
 with tf.name_scope('input'):
-    A = tf.placeholder(tf.float32, shape=None, name='A')
-    B = tf.placeholder(tf.float32, shape=None, name='B')
+    A = tf.placeholder(tf.float32, shape=[None, 1], name='A')
+    B = tf.placeholder(tf.float32, shape=[None, 1], name='B')
 
-    tf.summary.scalar('A', A)
-    tf.summary.scalar('B', B)
+    # tf.summary.scalar('A', A)
+    # tf.summary.scalar('B', B)
 
 with tf.name_scope('output'):
 
@@ -104,7 +125,7 @@ with tf.name_scope('output'):
 
     C = A + B
 
-    tf.summary.scalar('C', C)
+    # tf.summary.scalar('C', C)
 
 # Initialisation commands
 init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
@@ -160,10 +181,10 @@ with tf.Session() as l:
 
         while not coord.should_stop():
 
-            r = l.run(record)
+            x, y = l.run(record)
 
-            x = l.run(tf.cast(r['x'], tf.int64))
-            y = l.run(tf.cast(r['y'], tf.int64))
+            x = l.run(tf.reshape(x, [batch_size, 1]))
+            y = l.run(tf.reshape(y, [batch_size, 1]))
 
             feed_dict = {A: x, B: y}
             summary, ans = l.run([merged, C], feed_dict)
@@ -193,6 +214,6 @@ with tf.Session() as f:
     ckpt = tf.train.latest_checkpoint('./model/')
     loader.restore(f, ckpt)
 
-    ans = f.run(C, {A: 2.0, B: 5.0})
+    ans = f.run(C, {A: [[2.0]], B: [[5.0]]})
 
     print(ans)
