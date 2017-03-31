@@ -104,10 +104,11 @@ output_dir = './data/output/'
 csv_file = input_dir + 'csv_data.csv'
 record_file = output_dir + 'csv_record.tfrecords'
 
-# Here, we create handles for reading and writing TFRecord files.
-num_epochs = 1
-batch_size = 2
+# Here, we define the number of times we read a record file, and what size each batch is.
+num_epochs = 2
+batch_size = 1
 
+# Here, we create handles for reading and writing TFRecord files.
 csv_data = output_pipeline([csv_file], 1)
 record = input_pipeline([record_file], num_epochs, batch_size)
 
