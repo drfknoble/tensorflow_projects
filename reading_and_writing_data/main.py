@@ -66,7 +66,7 @@ def input_pipeline(filenames, num_epochs=1):
     return record
 
 # Directory and name of the record file.
-data_dir = './reading_and_writing_data/data/output/'
+data_dir = './data/output/'#'./reading_and_writing_data/data/output/'
 record_file = data_dir + 'record.tfrecords'
 
 # Creates a graph to read in a file.

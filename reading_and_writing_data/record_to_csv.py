@@ -37,7 +37,7 @@ def input_pipeline(filenames, num_epochs=1):
     return record
 
 # Directory and name of the csv and record file.
-output_dir = './reading_and_writing_data/data/output/'
+output_dir = './data/output/' #'./reading_and_writing_data/data/output/'
 
 record_file = output_dir + 'csv_record.tfrecords'
 

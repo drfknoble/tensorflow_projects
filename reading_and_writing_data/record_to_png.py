@@ -44,8 +44,8 @@ def input_pipeline(filenames, num_epochs=1):
 
     return record
 
-data_dir = './reading_and_writing_data/data/output/'
-name_file = data_dir + 'record.tfrecords'
+data_dir = './data/output/'#'./reading_and_writing_data/data/output/'
+name_file = data_dir + 'png_record.tfrecords'
 
 record = input_pipeline([name_file], 1)
 

@@ -93,10 +93,10 @@ def parse_file(file):
 
     return file_list
 
-feature_dir = './reading_and_writing_data/data/input/'
+feature_dir = './data/input/' #'./reading_and_writing_data/data/input/'
 feature_file = feature_dir + 'features.txt'
 
-label_dir = './reading_and_writing_data/data/input/'
+label_dir = './data/input/' #'./reading_and_writing_data/data/input/'
 label_file = label_dir + 'label.txt'
 
 populate_file(feature_file, feature_dir)
@@ -117,7 +117,7 @@ with tf.Session() as s:
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
 
-    record = tf.python_io.TFRecordWriter('./reading_and_writing_data/data/output/record.tfrecords')
+    record = tf.python_io.TFRecordWriter('./data/output/png_record.tfrecords') #'./reading_and_writing_data/data/output/record.tfrecords')
 
     try:
         i = 0
