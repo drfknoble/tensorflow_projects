@@ -3,8 +3,10 @@
 # pylint: disable=E0401
 # pylint: disable=C0103
 
+# Import. Here, we import tensorflow, which gives us access to the library.
 import tensorflow as tf 
 
+# Here, we define helper functions for writing data to an example to a TFRecord file.
 def float_feature(value):
     '''Create float_list-based feature'''
     return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
@@ -17,6 +19,7 @@ def bytes_feature(value):
     '''Create bytes_list-based feature'''
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
+# Here, we define a function that makes an example, which is written to a TFRecord file.
 def make_example(feature, label=None):
     '''Make example from feature'''
 
@@ -27,6 +30,7 @@ def make_example(feature, label=None):
 
     return example
 
+# Here, we define a function that reads a TFRecord file; parsing a single example.
 def read_record(filename_queue):
     '''Read record'''
 
@@ -43,6 +47,7 @@ def read_record(filename_queue):
 
     return example
 
+# Here, we define a function that reads a TFRecord file.
 def input_pipeline(filenames, num_epochs=1):
     """Read a TFRecord"""
 
@@ -56,6 +61,7 @@ def input_pipeline(filenames, num_epochs=1):
 
     return record
 
+# Here, we define a function that writes a TFRecord file.
 def output_pipeline(filenames, num_epochs=1):
     """Write a TFRecord"""
 
@@ -72,15 +78,19 @@ def output_pipeline(filenames, num_epochs=1):
 
     return [x, y]
 
+# Here, we define important directories.
 input_dir = './data/input/'
 output_dir = './data/output/'
 
+# Here, we define important file names.
 csv_file = input_dir + 'csv_data.csv'
 record_file = output_dir + 'csv_record.tfrecords'
 
+# Here, we create handles for reading and writing TFRecord files.
 csv_data = output_pipeline([csv_file], 1)
 record = input_pipeline([record_file], 1)
 
+# Here, we define our graph: C = A + B.
 with tf.name_scope('input'):
     A = tf.placeholder(tf.float32, shape=None, name='A')
     B = tf.placeholder(tf.float32, shape=None, name='B')
@@ -96,8 +106,10 @@ with tf.name_scope('output'):
 
     tf.summary.scalar('C', C)
 
+# Initialisation commands
 init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
 
+# In this session, we read our raw data and create a TFRecord file.
 with tf.Session() as s:
 
     s.run(init)
@@ -127,6 +139,7 @@ with tf.Session() as s:
 
     writer.close()
 
+# In this session, we read the TFRecord file and use its examples with our graph.
 with tf.Session() as l:
 
     l.run(init)
@@ -171,7 +184,10 @@ with tf.Session() as l:
 
     coord.join(threads)
 
+# Here, we restore our latest checkpoint and test our graph.
 with tf.Session() as f:
+
+    f.run(init)
 
     loader = tf.train.import_meta_graph('./model/main.meta')
     ckpt = tf.train.latest_checkpoint('./model/')
