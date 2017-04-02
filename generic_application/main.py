@@ -194,8 +194,8 @@ with tf.Session() as l:
 
             print(ans)
 
-            # if i%4 == 0:
-            saver.save(l, './model/main.ckpt', i)
+            if i%5 == 0:
+                saver.save(l, './model/main.ckpt', i)
 
             i += 1
 
