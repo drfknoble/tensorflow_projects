@@ -240,7 +240,7 @@ with tf.Session() as f:
     ckpt = tf.train.latest_checkpoint('./model/')
     loader.restore(f, ckpt)
 
-    ans = f.run(y_, {x: [[2.0]]})
+    ans = f.run(y_, {x: [[1.0], [2.0], [3.0]]})
 
     print(ans)
     print(f.run(W), f.run(b))
