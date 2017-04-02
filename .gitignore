@@ -1,2 +1,3 @@
-./linear_regression/logs
-./linear_regression/model
+**/logs
+**/model
+*.tfrecords
