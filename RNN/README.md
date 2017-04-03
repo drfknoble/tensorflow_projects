@@ -1,6 +1,6 @@
 # RNN
 
-In this project, I show you how to use TensorFlow to create a Recurrent Neural Network (RNN) to predict the next character is a string.
+In this project, I show you how to use TensorFlow to create a Recurrent Neural Network (RNN) to predict the next character is an array of four numbers.
 
 # Table of Contents
 

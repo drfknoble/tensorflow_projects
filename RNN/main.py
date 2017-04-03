@@ -312,7 +312,7 @@ with tf.Session() as f:
     ckpt = tf.train.latest_checkpoint('./model/')
     loader.restore(f, ckpt)
 
-    input = [[1.0], [2.0], [3.0]]
+    input = [[0.0], [0.0], [0.0]]
     X = f.run(tf.reshape(input, [1, 1, 3]))
     ans = f.run(y_, {x: X})
 
