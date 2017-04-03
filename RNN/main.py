@@ -1,5 +1,7 @@
 '''RNN'''
 
+#%%
+
 # pylint: disable=E0401
 # pylint: disable=C0103
 
@@ -38,6 +40,7 @@ def make_example(feature, label=None):
 
     return example
 
+
 def make_sequence_example(sequence, sequence_label):
     '''Make a sequence example from sequence'''
 
@@ -59,6 +62,7 @@ def make_sequence_example(sequence, sequence_label):
 # Here, we define a function that reads a TFRecord file; parsing a single
 # example.
 
+
 def read_record(filename_queue):
     '''Read record'''
 
@@ -75,6 +79,7 @@ def read_record(filename_queue):
 
     return example
 
+
 def read_sequence_record(filename_queue):
     """Read record"""
 
@@ -85,8 +90,8 @@ def read_sequence_record(filename_queue):
         record_string,
         None,
         sequence_features={
-            'feature_list': tf.FixedLenSequenceFeature(16, tf.float32),
-            'feature_list_labels': tf.FixedLenSequenceFeature(16, tf.float32)
+            'feature_list': tf.FixedLenSequenceFeature([], tf.float32),
+            'feature_list_labels': tf.FixedLenSequenceFeature([], tf.float32)
         })
 
     return sequence_example
@@ -99,6 +104,7 @@ def extract_example_data(example):
     label = tf.cast(example['label'], tf.float32)
 
     return feature, label
+
 
 def extract_sequence_example_data(sequence_example):
     '''Extract sequence example's data'''
@@ -120,9 +126,9 @@ def input_pipeline(filenames, num_epochs=1, batch_size=1):
         shuffle=False
     )
 
-    example = read_record(filename_queue)
+    sequence_example = read_sequence_record(filename_queue)
 
-    feature, label = extract_example_data(example)
+    feature, label = extract_sequence_example_data(sequence_example)
 
     min_after_dequeue = 10000
     capacity = min_after_dequeue + 3 * batch_size
@@ -149,30 +155,35 @@ def output_pipeline(filenames, num_epochs=1):
     reader = tf.TextLineReader()
     _, value = reader.read(filename_queue)
 
-    x, y = tf.decode_csv(value, record_defaults=[[0.0], [0.0]])
+    col_1, col_2, col_3, col_4 = tf.decode_csv(value, record_defaults=[[0.0], [0.0], [0.0], [0.0]])
 
-    return x, y
+    feature = [[col_1], [col_2], [col_3]]
+    label = [[col_4]]
 
+    return feature, label
 
 # Here, we define important directories.
 input_dir = './data/input/'
 output_dir = './data/output/'
 
 # Here, we define important file names.
-csv_file = input_dir + 'csv_data.csv'
-record_file = output_dir + 'csv_record.tfrecords'
+csv_file = input_dir + 'csv_sequence_data.csv'
+record_file = output_dir + 'csv_sequence_record.tfrecords'
 
 # Here, we define the number of times we read a record file, and what size
 # each batch is.
-num_epochs = 300
-batch_size = 2
+num_epochs = 40
+batch_size = 1
 
 # Here, we create handles for reading and writing TFRecord files.
-csv_data = output_pipeline([csv_file], 1)
+csv_sequence_data = output_pipeline([csv_file], 1)
 record = input_pipeline([record_file], num_epochs, batch_size)
 
+# Here, we define network parameters
+num_hidden = 10
+
 def MLP_layer(x, W, b):
-    '''Default layer'''
+    '''Default MLP layer'''
 
     W = tf.get_variable(name='W', shape=W,
                         dtype=tf.float32, initializer=tf.constant_initializer(1.0))
@@ -183,23 +194,36 @@ def MLP_layer(x, W, b):
 
     return y_
 
+def RNN_layer(cell, x, W, b):
+    '''Default RNN layer'''
+
+    W = tf.get_variable(name='W', shape=W,
+                        dtype=tf.float32, initializer=tf.constant_initializer(1.0))
+    b = tf.get_variable(name='b', shape=b,
+                        dtype=tf.float32, initializer=tf.constant_initializer(0.1))
+
+    output, _ = tf.nn.dynamic_rnn(cell, x, dtype=tf.float32)
+    val = tf.transpose(output, [1, 0, 2])
+    last = tf.gather(val, int(val.get_shape()[0]) - 1)
+
+    y_ = tf.add(tf.matmul(last, W), b)
+
+    return y_
+
 # Here, we define our graph.
 with tf.name_scope('input'):
 
-    x = tf.placeholder(tf.float32, shape=[None, 1], name='x')
+    x = tf.placeholder(tf.float32, shape=[None, 1, 3], name='x')
     y = tf.placeholder(tf.float32, shape=[None, 1], name='y')
 
 with tf.name_scope('network'):
 
-    with tf.variable_scope('layer_1'):
-        y_ = MLP_layer(x, [1, 3], [3])
-    with tf.variable_scope('layer_2'):
-        y_ = MLP_layer(y_, [3, 3], [3])
-    with tf.variable_scope('layer_3'):
-        y_ = MLP_layer(y_, [3, 1], [1])
+    cell = tf.contrib.rnn.LSTMCell(num_hidden, state_is_tuple=True)
+
+    y_ = RNN_layer(cell, x, [num_hidden, 1], [1])
 
 cost = tf.losses.mean_squared_error(y, y_)
-optimizer = tf.train.AdamOptimizer(0.1).minimize(cost)
+optimizer = tf.train.AdamOptimizer(0.01).minimize(cost)
 tf.summary.scalar('Cost', cost)
 
 # Initialisation commands
@@ -218,13 +242,13 @@ with tf.Session() as s:
     try:
         while not coord.should_stop():
 
-            feature, label = s.run(csv_data)
+            feature, label = s.run(csv_sequence_data)
 
-            example = make_example(feature, label)
+            sequence_example = make_sequence_example(feature, label)
 
-            print(example)
+            print(sequence_example)
 
-            writer.write(example.SerializeToString())
+            writer.write(sequence_example.SerializeToString())
 
     except tf.errors.OutOfRangeError:
         print('EoF')
@@ -241,7 +265,7 @@ with tf.Session() as l:
 
     l.run(init)
 
-    summary_writer = tf.summary.FileWriter('./logs', s.graph)
+    summary_writer = tf.summary.FileWriter('./logs', l.graph)
 
     merged = tf.summary.merge_all()
 
@@ -259,15 +283,12 @@ with tf.Session() as l:
 
             X, Y = l.run(record)
 
-            X = l.run(tf.reshape(X, [batch_size, 1]))
-            Y = l.run(tf.reshape(Y, [batch_size, 1]))
-
-            feed_dict = {x: X, y: Y}
+            feed_dict = {x: [X], y: Y}
             summary, c, _ = l.run([merged, cost, optimizer], feed_dict)
 
             summary_writer.add_summary(summary, i)
 
-            if i%(num_epochs/10) == 0:
+            if i % (num_epochs / 10) == 0:
                 print(c)
 
             if i % 50 == 0:
@@ -291,7 +312,8 @@ with tf.Session() as f:
     ckpt = tf.train.latest_checkpoint('./model/')
     loader.restore(f, ckpt)
 
-    X = f.run(tf.reshape([[1.0], [2.0], [3.0]], [-1, 1]))
+    input = [[1.0], [2.0], [3.0]]
+    X = f.run(tf.reshape(input, [1, 1, 3]))
     ans = f.run(y_, {x: X})
 
     print(ans)
