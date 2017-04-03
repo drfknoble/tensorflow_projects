@@ -20,12 +20,12 @@ def bytes_feature(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
 # Here, we define a function that makes an example, which is written to a TFRecord file.
-def make_example(feature, label=None):
+def make_example(feature, label):
     '''Make example from feature'''
 
     example = tf.train.Example(features=tf.train.Features(feature={
-        'x': float_feature(feature[0]),
-        'y': float_feature(feature[1]),
+        'feature': float_feature(feature),
+        'label': float_feature(label),
     }))
 
     return example
@@ -40,8 +40,8 @@ def read_record(filename_queue):
     example = tf.parse_single_example(
         serialised_example,
         features={
-            'x': tf.FixedLenFeature([], tf.float32),
-            'y': tf.FixedLenFeature([], tf.float32),
+            'feature': tf.FixedLenFeature([], tf.float32),
+            'label': tf.FixedLenFeature([], tf.float32),
         }
     )
 
@@ -50,8 +50,8 @@ def read_record(filename_queue):
 def extract_example_data(example):
     '''Extract record'''
 
-    feature = tf.cast(example['x'], tf.float32)
-    label = tf.cast(example['y'], tf.float32)
+    feature = tf.cast(example['feature'], tf.float32)
+    label = tf.cast(example['label'], tf.float32)
 
     return feature, label
 
@@ -156,9 +156,9 @@ with tf.Session() as s:
     try:
         while not coord.should_stop():
 
-            feature = s.run(csv_data)
+            feature, label = s.run(csv_data)
 
-            example = make_example(feature)
+            example = make_example(feature, label)
 
             print(example)
 
