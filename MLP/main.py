@@ -32,8 +32,8 @@ def make_example(feature, label=None):
     '''Make example from feature'''
 
     example = tf.train.Example(features=tf.train.Features(feature={
-        'x': float_feature(feature[0]),
-        'y': float_feature(feature[1]),
+        'feature': float_feature(feature),
+        'label': float_feature(label),
     }))
 
     return example
@@ -51,8 +51,8 @@ def read_record(filename_queue):
     example = tf.parse_single_example(
         serialised_example,
         features={
-            'x': tf.FixedLenFeature([], tf.float32),
-            'y': tf.FixedLenFeature([], tf.float32),
+            'feature': tf.FixedLenFeature([], tf.float32),
+            'label': tf.FixedLenFeature([], tf.float32),
         }
     )
 
@@ -60,10 +60,10 @@ def read_record(filename_queue):
 
 
 def extract_example_data(example):
-    '''Extract record'''
+    '''Extract example's data'''
 
-    feature = tf.cast(example['x'], tf.float32)
-    label = tf.cast(example['y'], tf.float32)
+    feature = tf.cast(example['feature'], tf.float32)
+    label = tf.cast(example['label'], tf.float32)
 
     return feature, label
 
@@ -110,7 +110,7 @@ def output_pipeline(filenames, num_epochs=1):
 
     x, y = tf.decode_csv(value, record_defaults=[[0.0], [0.0]])
 
-    return [x, y]
+    return x, y
 
 
 # Here, we define important directories.
@@ -130,6 +130,7 @@ batch_size = 2
 csv_data = output_pipeline([csv_file], 1)
 record = input_pipeline([record_file], num_epochs, batch_size)
 
+
 def MLP_layer(x, W, b):
     '''Default layer'''
 
@@ -141,6 +142,7 @@ def MLP_layer(x, W, b):
     y_ = tf.add(tf.matmul(x, W), b)
 
     return y_
+
 
 # Here, we define our graph.
 with tf.name_scope('input'):
@@ -177,9 +179,9 @@ with tf.Session() as s:
     try:
         while not coord.should_stop():
 
-            feature = s.run(csv_data)
+            feature, label = s.run(csv_data)
 
-            example = make_example(feature)
+            example = make_example(feature, label)
 
             print(example)
 
@@ -226,7 +228,7 @@ with tf.Session() as l:
 
             summary_writer.add_summary(summary, i)
 
-            if i%(num_epochs/10) == 0:
+            if i % (num_epochs / 10) == 0:
                 print(c)
 
             if i % 50 == 0:
