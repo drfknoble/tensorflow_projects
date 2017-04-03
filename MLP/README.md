@@ -1,4 +1,4 @@
-# MLP_universal_function
+# MLP
 
 In this project, I show you how to use TensorFlow to create a Multilayer Perceptron (MLP) neural network that appoximates an unknown function.
 
@@ -32,7 +32,7 @@ The following is a list of steps to follow to get started with using this projec
 1. Clone the tensorflow_projects repo'.
 1. Install Anaconda and create a Python 3.5 environment for TensorFlow, e.g. 'tf' for TensorFlow running on a CPU or 'tf-gpu' for TensorFlow running on a GPU. Activate the environment and install jupyer, matplotlib, scipy, and tensorflow/tensorflow-gpu.
 1. Install Code and the Python extension. 
-1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the MLP_universal_function directory. Open main.py.
+1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the MLP directory. Open main.py.
 1. Use Code's built-in console and type 'python main.py' to run the script.
 
 At this point, everything should compile and run.

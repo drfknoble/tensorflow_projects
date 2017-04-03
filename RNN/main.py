@@ -1,4 +1,4 @@
-'''MLP_universal_function'''
+'''RNN'''
 
 # pylint: disable=E0401
 # pylint: disable=C0103
@@ -130,7 +130,7 @@ batch_size = 2
 csv_data = output_pipeline([csv_file], 1)
 record = input_pipeline([record_file], num_epochs, batch_size)
 
-def layer(x, W, b):
+def MLP_layer(x, W, b):
     '''Default layer'''
 
     W = tf.get_variable(name='W', shape=W,
@@ -151,11 +151,11 @@ with tf.name_scope('input'):
 with tf.name_scope('network'):
 
     with tf.variable_scope('layer_1'):
-        y_ = layer(x, [1, 3], [3])
+        y_ = MLP_layer(x, [1, 3], [3])
     with tf.variable_scope('layer_2'):
-        y_ = layer(y_, [3, 3], [3])
+        y_ = MLP_layer(y_, [3, 3], [3])
     with tf.variable_scope('layer_3'):
-        y_ = layer(y_, [3, 1], [1])
+        y_ = MLP_layer(y_, [3, 1], [1])
 
 cost = tf.losses.mean_squared_error(y, y_)
 optimizer = tf.train.AdamOptimizer(0.1).minimize(cost)

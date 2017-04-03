@@ -1,25 +1,33 @@
-'''generic_application'''
+'''MLP'''
 
 # pylint: disable=E0401
 # pylint: disable=C0103
 
 # Import. Here, we import tensorflow, which gives us access to the library.
-import tensorflow as tf 
+import tensorflow as tf
 
-# Here, we define helper functions for writing data to an example to a TFRecord file.
+# Here, we define helper functions for writing data to an example to a
+# TFRecord file.
+
+
 def float_feature(value):
     '''Create float_list-based feature'''
     return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
+
 
 def int_feature(value):
     '''Create float_list-based feature'''
     return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
 
+
 def bytes_feature(value):
     '''Create bytes_list-based feature'''
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-# Here, we define a function that makes an example, which is written to a TFRecord file.
+# Here, we define a function that makes an example, which is written to a
+# TFRecord file.
+
+
 def make_example(feature, label=None):
     '''Make example from feature'''
 
@@ -30,7 +38,10 @@ def make_example(feature, label=None):
 
     return example
 
-# Here, we define a function that reads a TFRecord file; parsing a single example.
+# Here, we define a function that reads a TFRecord file; parsing a single
+# example.
+
+
 def read_record(filename_queue):
     '''Read record'''
 
@@ -47,6 +58,7 @@ def read_record(filename_queue):
 
     return example
 
+
 def extract_example_data(example):
     '''Extract record'''
 
@@ -56,6 +68,8 @@ def extract_example_data(example):
     return feature, label
 
 # Here, we define a function that reads a TFRecord file.
+
+
 def input_pipeline(filenames, num_epochs=1, batch_size=1):
     """Read a TFRecord"""
 
@@ -80,6 +94,8 @@ def input_pipeline(filenames, num_epochs=1, batch_size=1):
     return feature_batch, label_batch
 
 # Here, we define a function that writes a TFRecord file.
+
+
 def output_pipeline(filenames, num_epochs=1):
     """Write a TFRecord"""
 
@@ -96,6 +112,7 @@ def output_pipeline(filenames, num_epochs=1):
 
     return [x, y]
 
+
 # Here, we define important directories.
 input_dir = './data/input/'
 output_dir = './data/output/'
@@ -104,9 +121,10 @@ output_dir = './data/output/'
 csv_file = input_dir + 'csv_data.csv'
 record_file = output_dir + 'csv_record.tfrecords'
 
-# Here, we define the number of times we read a record file, and what size each batch is.
-num_epochs = 2
-batch_size = 1
+# Here, we define the number of times we read a record file, and what size
+# each batch is.
+num_epochs = 300
+batch_size = 2
 
 # Here, we create handles for reading and writing TFRecord files.
 csv_data = output_pipeline([csv_file], 1)
@@ -124,21 +142,24 @@ def MLP_layer(x, W, b):
 
     return y_
 
-# Here, we define our graph: C = A + B.
+# Here, we define our graph.
 with tf.name_scope('input'):
-    A = tf.placeholder(tf.float32, shape=[None, 1], name='A')
-    B = tf.placeholder(tf.float32, shape=[None, 1], name='B')
 
-    # tf.summary.scalar('A', A)
-    # tf.summary.scalar('B', B)
+    x = tf.placeholder(tf.float32, shape=[None, 1], name='x')
+    y = tf.placeholder(tf.float32, shape=[None, 1], name='y')
 
-with tf.name_scope('output'):
+with tf.name_scope('network'):
 
-    C = tf.Variable(0, name='C')
+    with tf.variable_scope('layer_1'):
+        y_ = MLP_layer(x, [1, 3], [3])
+    with tf.variable_scope('layer_2'):
+        y_ = MLP_layer(y_, [3, 3], [3])
+    with tf.variable_scope('layer_3'):
+        y_ = MLP_layer(y_, [3, 1], [1])
 
-    C = A + B
-
-    # tf.summary.scalar('C', C)
+cost = tf.losses.mean_squared_error(y, y_)
+optimizer = tf.train.AdamOptimizer(0.1).minimize(cost)
+tf.summary.scalar('Cost', cost)
 
 # Initialisation commands
 init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
@@ -173,7 +194,8 @@ with tf.Session() as s:
 
     writer.close()
 
-# In this session, we read the TFRecord file and use its examples with our graph.
+# In this session, we read the TFRecord file and use its examples with our
+# graph.
 with tf.Session() as l:
 
     l.run(init)
@@ -194,19 +216,20 @@ with tf.Session() as l:
 
         while not coord.should_stop():
 
-            x, y = l.run(record)
+            X, Y = l.run(record)
 
-            x = l.run(tf.reshape(x, [batch_size, 1]))
-            y = l.run(tf.reshape(y, [batch_size, 1]))
+            X = l.run(tf.reshape(X, [batch_size, 1]))
+            Y = l.run(tf.reshape(Y, [batch_size, 1]))
 
-            feed_dict = {A: x, B: y}
-            summary, ans = l.run([merged, C], feed_dict)
+            feed_dict = {x: X, y: Y}
+            summary, c, _ = l.run([merged, cost, optimizer], feed_dict)
 
             summary_writer.add_summary(summary, i)
 
-            print(ans)
+            if i%(num_epochs/10) == 0:
+                print(c)
 
-            if i%5 == 0:
+            if i % 50 == 0:
                 saver.save(l, './model/main.ckpt', i)
 
             i += 1
@@ -227,6 +250,7 @@ with tf.Session() as f:
     ckpt = tf.train.latest_checkpoint('./model/')
     loader.restore(f, ckpt)
 
-    ans = f.run(C, {A: [[2.0]], B: [[5.0]]})
+    X = f.run(tf.reshape([[1.0], [2.0], [3.0]], [-1, 1]))
+    ans = f.run(y_, {x: X})
 
     print(ans)
