@@ -55,6 +55,11 @@ The following is a list of projects included in this repo':
 1. [Visualising a Graph](https://github.com/FKNoble/tensorflow_projects/tree/master/visualising_a_graph). This project shows you how to use TensorBoard to visualise a graph and variables.
 1. [Saving and Loading a Graph](https://github.com/FKNoble/tensorflow_projects/tree/master/saving_and_loading_a_graph). This project shows you how to save and load a graph.
 1. [Reading and Writing Data](https://github.com/FKNoble/tensorflow_projects/tree/master/reading_and_writing_data). This project shows you how to read and write data from and to a TFRecord. 
+1. [Generic Application](). This project provides a scaffold for you to build subsequent projects on. The linear_regression, MLP, RNN, and CNN projects are all derived from the generic_application.
+1. [Linear Regression](). This project shows you how linear regression can be done using TensorFlow.
+1. [MLP](https://github.com/FKNoble/tensorflow_projects/tree/master/MLP). This project shows you how a Multilayered Perceptron (MLP) neural network can be implemented using TensorFlow; where, it approximates for a matematical function.
+1. [RNN](https://github.com/FKNoble/tensorflow_projects/tree/master/RNN). This project shows you how a Recurrent Neural Network (RNN) can be implemented using TensorFlow; where, it predicts the next number in an array of numbers.
+1. [CNN](https://github.com/FKNoble/tensorflow_projects/tree/master/CNN). This project shows you how a Convolutional Neural Network (CNN) can be implemented using TensorFlow; wher, it learns a kernel that is convolved with an input image to give an output image.
 
 # Tutorials
 
