@@ -1,6 +1,6 @@
 # CNN
 
-In this project, I show you how to use TensorFlow to create a Convolutional Neural Network (CNN) to predict the next character is an array of four numbers.
+In this project, I show you how to use TensorFlow to create a Convolutional Neural Network (CNN) to learn the identity kernel so that the output image matches the input image.
 
 # Table of Contents
 
