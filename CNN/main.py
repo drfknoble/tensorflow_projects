@@ -189,7 +189,7 @@ labels_list = parse_file(labels_txt_file)
 
 # Here, we define the number of times we read a record file, and what size
 # each batch is.
-num_epochs = 1000
+num_epochs = 5000
 batch_size = 1
 
 # Here, we create handles for reading and writing TFRecord files.
@@ -198,8 +198,6 @@ labels = output_pipeline(labels_list, 1)
 record = input_pipeline([record_file], num_epochs, batch_size)
 
 # Here, we define network parameters
-
-# temp = tf.Variable(0, name='temp')
 
 # Here, we define our graph.
 with tf.name_scope('input'):
@@ -210,9 +208,9 @@ with tf.name_scope('input'):
 with tf.name_scope('network'):
 
     with tf.variable_scope('conv1_1') as scope:
-        kernel = tf.Variable(tf.truncated_normal([1, 1, 3, 1], 0, 0.2), name='kernel')
-        y_ = tf.nn.depthwise_conv2d(x, kernel, [1, 1, 1, 1], 'SAME', name='depthwise_conv')
-        # y_ = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], 'SAME', name='depthwise_conv')
+        kernel = tf.Variable(tf.truncated_normal([1, 1, 3, 3], 0, 0.2), name='kernel')
+        # y_ = tf.nn.depthwise_conv2d(x, kernel, [1, 1, 1, 1], 'SAME', name='depthwise_conv')
+        y_ = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], 'SAME', name='depthwise_conv')
 
 
 cost = tf.losses.mean_squared_error(y, y_)
