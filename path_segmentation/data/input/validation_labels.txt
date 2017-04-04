@@ -1,0 +1,11 @@
+./data/input/labels/validation/um_000084.png
+./data/input/labels/validation/um_000085.png
+./data/input/labels/validation/um_000086.png
+./data/input/labels/validation/um_000087.png
+./data/input/labels/validation/um_000088.png
+./data/input/labels/validation/um_000089.png
+./data/input/labels/validation/um_000090.png
+./data/input/labels/validation/um_000091.png
+./data/input/labels/validation/um_000092.png
+./data/input/labels/validation/um_000093.png
+./data/input/labels/validation/um_000094.png
