@@ -6,8 +6,8 @@
 # pylint: disable=C0103
 
 # Import. Here, we import tensorflow, which gives us access to the library.
-import tensorflow as tf
 import os
+import tensorflow as tf
 
 # Here, we define helper functions for writing data to an example to a
 # TFRecord file.
