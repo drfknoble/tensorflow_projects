@@ -49,6 +49,10 @@ To run TensorBoard, run the following command and browse to 'localhost:6006':
 
     tensorboard --logdir=./logs
 
+After 3000 training epochs, you should see an output similar to below:
+
+![Graph](./data/output/Capture.PNG)
+
 # Contributions
 
 If you feel like you can make a contribution; please, feel free to make a request.

@@ -189,7 +189,7 @@ labels_list = parse_file(labels_txt_file)
 
 # Here, we define the number of times we read a record file, and what size
 # each batch is.
-num_epochs = 5000
+num_epochs = 1000
 batch_size = 1
 
 # Here, we create handles for reading and writing TFRecord files.
@@ -262,8 +262,14 @@ with tf.Session() as l:
     merged = tf.summary.merge_all()
 
     saver = tf.train.Saver()
-    saver.save(l, './model/main.ckpt', 0)
-    saver.export_meta_graph('./model/main.meta')
+
+    try:
+        loader = tf.train.import_meta_graph('./model/main.meta')
+        ckpt = tf.train.latest_checkpoint('./model/')
+        loader.restore(l, ckpt)
+    except Exception as e:
+        saver.save(l, './model/main.ckpt', 0)
+        saver.export_meta_graph('./model/main.meta')
 
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
