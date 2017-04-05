@@ -91,7 +91,7 @@ record_file = output_dir + 'training_record.tfrecords'
 
 # Here, we define the number of times we read a record file, and what size
 # each batch is.
-num_epochs = 10
+num_epochs = 1000
 batch_size = 1
 
 # Here, we create handles for reading and writing TFRecord files.
@@ -110,7 +110,7 @@ with tf.name_scope('network'):
         y_ = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], 'SAME', name='conv')
 
 cost = tf.losses.mean_squared_error(y, y_)
-optimizer = tf.train.AdamOptimizer(0.01).minimize(cost)
+optimizer = tf.train.AdamOptimizer(1e-6).minimize(cost)
 tf.summary.scalar('Cost', cost)
 
 # Initialisation commands
@@ -132,7 +132,7 @@ with tf.Session() as l:
         loader = tf.train.import_meta_graph('./model/main.meta')
         ckpt = tf.train.latest_checkpoint('./model/')
         loader.restore(l, ckpt)
-    except Exception as e:
+    except IOError as e:
         saver.save(l, './model/main.ckpt', 0)
         saver.export_meta_graph('./model/main.meta')
 

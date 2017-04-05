@@ -1,4 +1,6 @@
 **/logs
 **/model
+**/data/test
 *.tfrecords
 *.7z
+*Thumbs.db
