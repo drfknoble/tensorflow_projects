@@ -26,10 +26,9 @@ tf.flags.DEFINE_string('mode', "train", "Mode train/ test/ visualize")
 
 MODEL_URL = 'http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat'
 
-MAX_ITERATION = int(1e4 + 1)
+MAX_ITERATION = int(1e3 + 1)
 NUM_OF_CLASSESS = 151
 IMAGE_SIZE = 224
-
 
 def vgg_net(weights, image):
     layers = (
@@ -159,7 +158,7 @@ def train(loss_val, var_list):
 # Main
 
 training_record = utils.input_pipeline(
-    [FLAGS.data_dir + 'training_record.tfrecords'], 1)
+    [FLAGS.data_dir + 'training_record.tfrecords'], MAX_ITERATION)
 validation_record = utils.input_pipeline(
     [FLAGS.data_dir + 'validation_record.tfrecords'], 1)
 
@@ -242,7 +241,8 @@ with tf.Session() as sess:
                     summary_writer.add_summary(summary_str, itr)
 
                 if itr % 250 == 0:
-                    validation_image, validation_annotation = sess.run(validation_record)
+                    validation_image, validation_annotation = sess.run(
+                        validation_record)
 
                     validation_image = sess.run(tf.image.resize_images(
                         validation_image, [IMAGE_SIZE, IMAGE_SIZE]))
@@ -252,12 +252,11 @@ with tf.Session() as sess:
                     valid_loss = sess.run(loss, feed_dict={image: validation_image,
                                                            annotation: validation_annotation,
                                                            keep_probability: 1.0})
+
                     print("%s ---> Validation_loss" % (valid_loss))
                     saver.save(sess, FLAGS.logs_dir + "model.ckpt", itr)
 
                 itr += 1
-
-                break
 
         except tf.errors.OutOfRangeError:
             print('EoF')
@@ -271,6 +270,33 @@ with tf.Session() as sess:
             i = 0
 
             while not coord.should_stop():
+
+                validation_image, validation_annotation = sess.run(
+                    validation_record)
+
+                validation_image = sess.run(tf.image.resize_images(
+                    validation_image, [IMAGE_SIZE, IMAGE_SIZE]))
+                validation_annotation = sess.run(tf.image.resize_images(
+                    validation_annotation, [IMAGE_SIZE, IMAGE_SIZE]))
+
+                pred = sess.run(pred_annotation, feed_dict={image:  validation_image,
+                                                            annotation:  validation_annotation,
+                                                            keep_probability: 1.0})
+
+                f_file = sess.run(tf.image.encode_png(validation_image[0]))
+                W = open(FLAGS.logs_dir + './validation_image' + str(i) + '.png', 'wb+')
+                W.write(f_file)
+                W.close()
+
+                f_file = sess.run(tf.image.encode_png(validation_annotation[0]))
+                W = open(FLAGS.logs_dir + './validation_annotation' + str(i) + '.png', 'wb+')
+                W.write(f_file)
+                W.close()
+
+                f_file = sess.run(tf.image.encode_png(pred[0]))
+                W = open(FLAGS.logs_dir + './pred' + str(i) + '.png', 'wb+')
+                W.write(f_file)
+                W.close()
 
                 i += 1
 
