@@ -4,6 +4,7 @@
 
 # pylint: disable=E0401
 # pylint: disable=C0103
+# pylint: disable=W0621
 
 # Import. Here, we import tensorflow, which gives us access to the library.
 import os
@@ -97,20 +98,31 @@ batch_size = 1
 # Here, we create handles for reading and writing TFRecord files.
 record = input_pipeline([record_file], num_epochs, batch_size)
 
-# Here, we define our graph.
+# Here, we define out input
 with tf.name_scope('input'):
 
     x = tf.placeholder(tf.float32, shape=[None, None, None, None], name='x')
     y = tf.placeholder(tf.float32, shape=[None, None, None, None], name='y')
 
+# Here, we define our graph.
 with tf.name_scope('network'):
 
-    with tf.variable_scope('conv1_1') as scope:
-        kernel = tf.Variable(tf.truncated_normal([1, 1, 3, 3], 0, 0.2), name='kernel')
-        y_ = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], 'SAME', name='conv')
+    token = x
+
+    with tf.variable_scope('conv1_1'):
+        kernel = tf.get_variable(initializer=tf.truncated_normal_initializer(0, 0.2),
+                                 shape=[3, 3, 3, 3], name='kernel')
+        bias = tf.get_variable(initializer=tf.constant_initializer(0), shape=[3], name='bias')
+        conv = tf.nn.conv2d(token, kernel, strides=[1, 1, 1, 1], padding='SAME')
+        token = tf.nn.bias_add(conv, bias)
+        
+# Here, we define our output
+with tf.name_scope('Output'):
+
+    y_ = token
 
 cost = tf.losses.mean_squared_error(y, y_)
-optimizer = tf.train.AdamOptimizer(1e-6).minimize(cost)
+optimizer = tf.train.AdamOptimizer(1e-2).minimize(cost)
 tf.summary.scalar('Cost', cost)
 
 # Initialisation commands
@@ -165,3 +177,10 @@ with tf.Session() as l:
         coord.request_stop()
 
     coord.join(threads)
+
+    test = l.run(y_, {x: feature})[0]
+
+    f_file = l.run(tf.image.encode_png(test))
+    W = open(output_dir + './test.png', 'wb+')
+    W.write(f_file)
+    W.close()

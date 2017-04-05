@@ -137,7 +137,7 @@ with tf.Session() as f:
             test = f.run(y_, {x: feature})[0]
 
             f_file = f.run(tf.image.encode_png(test))
-            W = open(output_dir + './test/test_' + str(i) + '.png', 'wb+')
+            W = open(output_dir + './validation_' + str(i) + '.png', 'wb+')
             W.write(f_file)
             W.close()
 
