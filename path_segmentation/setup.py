@@ -12,7 +12,7 @@ import utilities as utils
 # Here, we define important directories.
 logs = './logs/'
 model = './model/'
-input_dir = './data/input/'  # './data/test/ to learn the identity kernel
+input_dir = './data/test/'  # './data/test/ to learn the identity kernel
 output_dir = './data/output/'
 training_features_dir = input_dir + 'features/training/'
 training_labels_dir = input_dir + 'labels/training/'
