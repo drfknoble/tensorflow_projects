@@ -35,7 +35,7 @@ The following is a list of steps to follow to get started with using this projec
 1. Install Code and the Python extension. 
 1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the path_segmentation directory.
 
-Since the network is large, its exported meta data is going to be too (it's approximately 2 GB per export). To help, in setup.py and main.py I've create a variable named default_dir, which can be any valid directory you want (just make sure the host drive, e.g. C:/, has enough space). default_dir should contain the create data, logs, and model sub-directories. Download the VGG Data into the model sub-directory. Then, everything should be good to go.
+Since the network is large, its exported meta data is going to be too (it's approximately 2 GB per export). To help, in setup.py and main.py I've create a variable named default_dir, which can be any valid directory you want (just make sure the host drive, e.g. C:/, has enough space). default_dir should contain the create data, logs, and model sub-directories. Download the VGG Data into the model sub-directory. setup.py will populate the data directory. main.py will populate the logs sub-directory. Then, everything should be setup properly.
 
 # Usage 
 
