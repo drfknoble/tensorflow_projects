@@ -59,7 +59,7 @@ To run TensorBoard, use Code's built-in console and type the following command:
 
 Afterwards, browse to 'localhost:6006' to view TensorBoard's panels.
 
-After 30,000 training iterations, you should see an output similar to below:
+After 30,000 training iterations, you should see an output similar to below (training for longer will give better results, but if you're running this on your CPU, it'll take ages):
 
 ![Feature](./data/output/feature.png)
 ![Label](./data/output/label.png)
