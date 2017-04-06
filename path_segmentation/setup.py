@@ -10,6 +10,8 @@ import tensorflow as tf
 import utilities as utils
 
 # Here, we define important directories.
+default_dir = 'E:/users/fknoble/My_FCN/'
+
 logs = './logs/'
 model = './model/'
 input_dir = './data/input/'  # './data/test/ to learn the identity kernel
@@ -25,8 +27,8 @@ training_labels_txt_file = input_dir + 'training_labels.txt'
 validation_features_txt_file = input_dir + 'validation_features.txt'
 validation_labels_txt_file = input_dir + 'validation_labels.txt'
 
-training_record_file = output_dir + 'training_record.tfrecords'
-validation_record_file = output_dir + 'validation_record.tfrecords'
+training_record_file = default_dir + 'data/training_record.tfrecords'
+validation_record_file = default_dir + 'data/validation_record.tfrecords'
 
 # Here, we populate the feature_file and label_file with name of feature
 # and label images.
