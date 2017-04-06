@@ -4,3 +4,4 @@
 *.tfrecords
 *.7z
 *Thumbs.db
+**__pycache__
