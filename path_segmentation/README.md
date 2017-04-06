@@ -41,7 +41,7 @@ Please note: you can also run main.py from within Code by typing 'F1', then 'run
 
 # Usage 
 
-To run the main.py script, browse to generic_application directory and run the following command in a command line window:
+To run the main.py script, browse to path_segmentation directory and run the following command in a command line window:
 
     python main.py
 
@@ -49,9 +49,11 @@ To run TensorBoard, run the following command and browse to 'localhost:6006':
 
     tensorboard --logdir=./logs
 
-After 3000 training epochs, you should see an output similar to below:
+After 30,000 training iterations, you should see an output similar to below:
 
-![Graph](./data/output/Capture.PNG)
+![Feature](./data/output/feature.png)
+![Label](./data/output/label.png)
+![Pred](./data/output/pred.png)
 
 # Contributions
 
