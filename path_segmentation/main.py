@@ -27,7 +27,7 @@ tf.flags.DEFINE_string('mode', "train", "Mode train/ test/ visualize")
 
 MODEL_URL = 'http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat'
 
-MAX_ITERATION = int(1e3 + 1)
+MAX_ITERATION = int(20 + 1)
 NUM_OF_CLASSESS = 151
 IMAGE_SIZE = 224
 
@@ -237,7 +237,7 @@ with tf.Session() as sess:
                     print("Step: %d, Train_loss:%g" % (itr, train_loss))
                     summary_writer.add_summary(summary_str, itr)
 
-                if itr % 80 == 0:
+                if itr % 400 == 0:
                     validation_image, validation_annotation = sess.run(
                         validation_record)
 
