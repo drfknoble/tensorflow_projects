@@ -6,6 +6,7 @@
 # pylint: disable=C0103
 # pylint: disable=W0621
 
+import os
 import numpy as np
 import tensorflow as tf
 import utilities as utils
@@ -177,7 +178,7 @@ with tf.name_scope('input'):
 
 with tf.name_scope('output'):
     pred_annotation, logits = inference(image, keep_probability)
-    tf.summary.image("pred_annotation", tf.cast(pred_annotation, tf.uint8), max_outputs=2)\
+    tf.summary.image("pred_annotation", tf.cast(pred_annotation, tf.uint8), max_outputs=2)
 
 loss = tf.reduce_mean((tf.nn.sparse_softmax_cross_entropy_with_logits(
     logits=logits,
@@ -203,17 +204,13 @@ with tf.Session() as sess:
     threads = tf.train.start_queue_runners(coord=coord)
 
     saver = tf.train.Saver()
+
     summary_writer = tf.summary.FileWriter(FLAGS.logs_dir, sess.graph)
 
-    try:
-        loader = tf.train.import_meta_graph(FLAGS.logs_dir + 'main.meta')
-        ckpt = tf.train.latest_checkpoint(FLAGS.logs_dir)
-        loader.restore(sess, ckpt)
+    ckpt = tf.train.latest_checkpoint(FLAGS.logs_dir)
+    if ckpt is not None:
+        saver.restore(sess, ckpt)
         print('Model restored...')
-    except IOError as e:
-        saver.save(sess, FLAGS.logs_dir + 'main.ckpt', 0)
-        saver.export_meta_graph(FLAGS.logs_dir + 'main.meta')
-        print('Model saved...')
 
     if FLAGS.mode == 'train':
         try:
@@ -240,7 +237,7 @@ with tf.Session() as sess:
                     print("Step: %d, Train_loss:%g" % (itr, train_loss))
                     summary_writer.add_summary(summary_str, itr)
 
-                if itr % 250 == 0:
+                if itr % 80 == 0:
                     validation_image, validation_annotation = sess.run(
                         validation_record)
 
@@ -253,7 +250,7 @@ with tf.Session() as sess:
                                                            annotation: validation_annotation,
                                                            keep_probability: 1.0})
 
-                    print("%s ---> Validation_loss" % (valid_loss))
+                    print("Validation_loss: %s" % (valid_loss))
                     saver.save(sess, FLAGS.logs_dir + "model.ckpt", itr)
 
                 itr += 1
