@@ -11,6 +11,12 @@ import numpy as np
 import tensorflow as tf
 import utilities as utils
 
+if not os.path.exists('./model'):
+    os.makedirs('./model')
+
+if not os.path.exists('/logs'):
+    os.makedirs('/logs')
+
 default_dir = 'E:\\users\\fknoble\\My_FCN\\'
 
 FLAGS = tf.flags.FLAGS

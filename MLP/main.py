@@ -4,7 +4,17 @@
 # pylint: disable=C0103
 
 # Import. Here, we import tensorflow, which gives us access to the library.
+import os
 import tensorflow as tf
+
+if not os.path.exists('./data/output'):
+    os.makedirs('./data/output')
+
+if not os.path.exists('./model'):
+    os.makedirs('./model')
+
+if not os.path.exists('./logs'):
+    os.makedirs('./logs')
 
 # Here, we define helper functions for writing data to an example to a
 # TFRecord file.

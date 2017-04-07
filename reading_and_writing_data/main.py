@@ -6,8 +6,18 @@ Reading and Writing Data
 # pylint: disable=E0401
 
 # Import 'tensorflow' to get access to the TensorFlow library.
+import os
 import tensorflow as tf
 
+if not os.path.exists('./data/output'):
+    os.makedirs('./data/output')
+
+if not os.path.exists('./model'):
+    os.makedirs('./model')
+
+if not os.path.exists('./logs'):
+    os.makedirs('./logs')
+    
 # Adds a float_list feature to an example.
 def float_feature(value):
     '''Create float_list-based feature'''

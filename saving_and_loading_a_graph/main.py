@@ -4,8 +4,18 @@
 # pylint: disable=C0103
 
 # Import tensorflow to get access to tensorflow library
+import os
 import tensorflow as tf 
 
+if not os.path.exists('./data/output'):
+    os.makedirs('./data/output')
+
+if not os.path.exists('./model'):
+    os.makedirs('./model')
+
+if not os.path.exists('./logs'):
+    os.makedirs('./logs')
+    
 # Create placeholders as empty variables, which you send data to when evaluating the graph.
 # The name_scope groups objects together. Here, the inputs A and B are in the 'input' name_scope.
 with tf.name_scope('input'):
