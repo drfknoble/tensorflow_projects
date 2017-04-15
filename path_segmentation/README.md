@@ -30,24 +30,23 @@ Please note: if you want to use TensorFlow on a GPU, you'll need to make sure yo
 
 The following is a list of steps to follow to get started with using this project':
 
-1. Clone the tensorflow_projects repo'.
+1. Clone the path_segmentation repo'.
+1. Download the VGG Data and copy it into the model sub-directory.
 1. Install Anaconda and create a Python 3.5 environment for TensorFlow, e.g. 'tf' for TensorFlow running on a CPU or 'tf-gpu' for TensorFlow running on a GPU. Activate the environment and install jupyer, matplotlib, scipy, and tensorflow/tensorflow-gpu.
 1. Install Code and the Python extension. 
 1. Open a Windows command line and activate an environment. Type 'code' to open Code, then browse to the path_segmentation directory.
 
-Since the network is large, its exported meta data is going to be too (it's approximately 2 GB per export). To help, in setup.py and main.py I've create a variable named default_dir, which can be any valid directory you want (just make sure the host drive, e.g. C:/, has enough space). default_dir should contain 'data', 'logs', and 'model' sub-directories. Download the VGG Data into the model sub-directory. setup.py will populate the data sub-directory. main.py will populate the logs sub-directory. Then, everything should be setup properly.
-
 # Usage 
 
-To generate the training and validation TFRecords, use Code's built-in console and type the following command: 
+To generate the training and validation TFRecords, use Code's built-in, or the system's, console and type the following command: 
 
     python setup.py
 
-To train the network, use Code's built-in console and type the following command: 
+To train the network, use Code's built-in, or the system's, console and type the following command: 
 
     python main.py --mode=train
 
-To visualise the network's output, use code's built-in console and type the following command: 
+To visualise the network's output, use code's built-in, or the system's, console and type the following command: 
 
     python main.py --mode=visualize
 
@@ -61,9 +60,9 @@ Afterwards, browse to 'localhost:6006' to view TensorBoard's panels.
 
 After 30,000 training iterations, you should see an output similar to below (training for longer will give better results, but if you're running this on your CPU, it'll take ages):
 
-![Feature](./data/output/feature.png)
-![Label](./data/output/label.png)
-![Pred](./data/output/pred.png)
+![Feature](./data/output/validation_image.png)
+![Label](./data/output/validation_annotation.png)
+![Pred](./data/output/predicted.png)
 
 # Contributions
 

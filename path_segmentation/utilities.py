@@ -17,6 +17,7 @@ import scipy.misc as misc
 import tensorflow as tf
 from six.moves import urllib
 
+
 def populate_file(file, file_dir):
     ''' populate file with file names ending in '.png' '''
 
@@ -164,7 +165,44 @@ def input_pipeline(filenames, num_epochs=1, batch_size=1):
 
     return feature_batch, label_batch
 
+
+def conv_layer(input, kernel_shape, bias_shape, stride=1, kernel_init=None, bias_init=None):
+    '''Create a convolutional layer.'''
+
+    if kernel_init is None:
+        weights = tf.get_variable(
+            name='_W', shape=kernel_shape, initializer=tf.random_normal_initializer(mean=1.0))
+    else:
+        weights = tf.get_variable(
+            name='_W', shape=kernel_shape, initializer=tf.constant_initializer(kernel_init))
+
+    if bias_init is None:
+        biases = tf.get_variable(
+            name='_b', shape=bias_shape, initializer=tf.constant_initializer(0.1))
+    else:
+        biases = tf.get_variable(
+            name='_b', shape=bias_shape, initializer=tf.constant_initializer(bias_init))
+
+    conv = tf.nn.conv2d(input, weights, strides=[1, stride, stride, 1], padding='SAME')
+
+    return tf.nn.bias_add(conv, biases)
+
+
+def transpose_conv_layer(input, kernel_shape, bias_shape, output_shape, stride=2):
+    '''Create a transpose convolutional layer.'''
+
+    weights = tf.get_variable(
+        name='_W', shape=kernel_shape, initializer=tf.random_normal_initializer(mean=1.0))
+    biases = tf.get_variable(
+        name='_b', shape=bias_shape, initializer=tf.constant_initializer(0.1))
+
+    conv = tf.nn.conv2d_transpose(input, weights, output_shape, strides=[
+        1, stride, stride, 1], padding="SAME")
+
+    return tf.nn.bias_add(conv, biases)
+
 # End of my utilities.
+
 
 def get_model_data(dir_path, model_url):
     maybe_download_and_extract(dir_path, model_url)
@@ -187,7 +225,8 @@ def maybe_download_and_extract(dir_path, url_name, is_tarfile=False, is_zipfile=
                 '\r>> Downloading %s %.1f%%' % (filename, float(count * block_size) / float(total_size) * 100.0))
             sys.stdout.flush()
 
-        filepath, _ = urllib.request.urlretrieve(url_name, filepath, reporthook=_progress)
+        filepath, _ = urllib.request.urlretrieve(
+            url_name, filepath, reporthook=_progress)
         print()
         statinfo = os.stat(filepath)
         print('Succesfully downloaded', filename, statinfo.st_size, 'bytes.')
@@ -238,7 +277,7 @@ def bias_variable(shape, name=None):
 
 def get_tensor_size(tensor):
     from operator import mul
-    return reduce(mul, (d.value for d in tensor.get_shape()), 1)
+    return tf.reduce_all(mul, (d.value for d in tensor.get_shape()), 1)
 
 
 def conv2d_basic(x, W, bias):
@@ -251,7 +290,7 @@ def conv2d_strided(x, W, b):
     return tf.nn.bias_add(conv, b)
 
 
-def conv2d_transpose_strided(x, W, b, output_shape=None, stride = 2):
+def conv2d_transpose_strided(x, W, b, output_shape=None, stride=2):
     # print x.get_shape()
     # print W.get_shape()
     if output_shape is None:
@@ -260,7 +299,8 @@ def conv2d_transpose_strided(x, W, b, output_shape=None, stride = 2):
         output_shape[2] *= 2
         output_shape[3] = W.get_shape().as_list()[2]
     # print output_shape
-    conv = tf.nn.conv2d_transpose(x, W, output_shape, strides=[1, stride, stride, 1], padding="SAME")
+    conv = tf.nn.conv2d_transpose(x, W, output_shape, strides=[
+                                  1, stride, stride, 1], padding="SAME")
     return tf.nn.bias_add(conv, b)
 
 
@@ -285,8 +325,8 @@ def batch_norm(x, n_out, phase_train, scope='bn', decay=0.9, eps=1e-5):
     Code taken from http://stackoverflow.com/a/34634291/2267819
     """
     with tf.variable_scope(scope):
-        beta = tf.get_variable(name='beta', shape=[n_out], initializer=tf.constant_initializer(0.0)
-                               , trainable=True)
+        beta = tf.get_variable(name='beta', shape=[
+                               n_out], initializer=tf.constant_initializer(0.0), trainable=True)
         gamma = tf.get_variable(name='gamma', shape=[n_out], initializer=tf.random_normal_initializer(1.0, 0.02),
                                 trainable=True)
         batch_mean, batch_var = tf.nn.moments(x, [0, 1, 2], name='moments')
@@ -320,14 +360,16 @@ def bottleneck_unit(x, out_chan1, out_chan2, down_stride=False, up_stride=False,
     def conv_transpose(tensor, out_channel, shape, strides, name=None):
         out_shape = tensor.get_shape().as_list()
         in_channel = out_shape[-1]
-        kernel = weight_variable([shape, shape, out_channel, in_channel], name=name)
+        kernel = weight_variable(
+            [shape, shape, out_channel, in_channel], name=name)
         shape[-1] = out_channel
         return tf.nn.conv2d_transpose(x, kernel, output_shape=out_shape, strides=[1, strides, strides, 1],
                                       padding='SAME', name='conv_transpose')
 
     def conv(tensor, out_chans, shape, strides, name=None):
         in_channel = tensor.get_shape().as_list()[-1]
-        kernel = weight_variable([shape, shape, in_channel, out_chans], name=name)
+        kernel = weight_variable(
+            [shape, shape, in_channel, out_chans], name=name)
         return tf.nn.conv2d(x, kernel, strides=[1, strides, strides, 1], padding='SAME', name='conv')
 
     def bn(tensor, name=None):
@@ -354,24 +396,29 @@ def bottleneck_unit(x, out_chan1, out_chan2, down_stride=False, up_stride=False,
                     b1 = conv_transpose(x, out_chans=out_chan2, shape=1, strides=first_stride,
                                         name='res%s_branch1' % name)
                 else:
-                    b1 = conv(x, out_chans=out_chan2, shape=1, strides=first_stride, name='res%s_branch1' % name)
+                    b1 = conv(x, out_chans=out_chan2, shape=1,
+                              strides=first_stride, name='res%s_branch1' % name)
                 b1 = bn(b1, 'bn%s_branch1' % name, 'scale%s_branch1' % name)
 
         with tf.variable_scope('branch2a'):
             if up_stride:
-                b2 = conv_transpose(x, out_chans=out_chan1, shape=1, strides=first_stride, name='res%s_branch2a' % name)
+                b2 = conv_transpose(x, out_chans=out_chan1, shape=1,
+                                    strides=first_stride, name='res%s_branch2a' % name)
             else:
-                b2 = conv(x, out_chans=out_chan1, shape=1, strides=first_stride, name='res%s_branch2a' % name)
+                b2 = conv(x, out_chans=out_chan1, shape=1,
+                          strides=first_stride, name='res%s_branch2a' % name)
             b2 = bn(b2, 'bn%s_branch2a' % name, 'scale%s_branch2a' % name)
             b2 = tf.nn.relu(b2, name='relu')
 
         with tf.variable_scope('branch2b'):
-            b2 = conv(b2, out_chans=out_chan1, shape=3, strides=1, name='res%s_branch2b' % name)
+            b2 = conv(b2, out_chans=out_chan1, shape=3,
+                      strides=1, name='res%s_branch2b' % name)
             b2 = bn(b2, 'bn%s_branch2b' % name, 'scale%s_branch2b' % name)
             b2 = tf.nn.relu(b2, name='relu')
 
         with tf.variable_scope('branch2c'):
-            b2 = conv(b2, out_chans=out_chan2, shape=1, strides=1, name='res%s_branch2c' % name)
+            b2 = conv(b2, out_chans=out_chan2, shape=1,
+                      strides=1, name='res%s_branch2c' % name)
             b2 = bn(b2, 'bn%s_branch2c' % name, 'scale%s_branch2c' % name)
 
         x = b1 + b2
