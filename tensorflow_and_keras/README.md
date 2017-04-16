@@ -45,10 +45,6 @@ To run the main.py script, browse to tensorflow_and_keras directory and run the 
 
     python main.py
 
-To run TensorBoard, run the following command and browse to 'localhost:6006':
-
-    tensorboard --logdir=./logs
-
 # Contributions
 
 If you feel like you can make a contribution; please, feel free to make a request.
