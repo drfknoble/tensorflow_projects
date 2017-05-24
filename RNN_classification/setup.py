@@ -21,7 +21,7 @@ utils.generate_file_list(
     './data/input/training_labels.txt')
 
 # generate training record
-temp = utils.generate_records(['./data/input/training_features.txt'], 1)
+temp = utils.parse_file_list(['./data/input/training_features.txt'], 1)
 
 init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
 
