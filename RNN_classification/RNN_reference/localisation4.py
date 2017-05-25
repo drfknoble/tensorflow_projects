@@ -143,7 +143,8 @@ target = tf.placeholder(tf.float32, [None, 16])
 weight = tf.Variable(tf.truncated_normal([num_hidden, int(target.get_shape()[1])]))
 bias = tf.Variable(tf.constant(0.0, shape=[target.get_shape()[1]]))
 
-cell = tf.nn.rnn_cell.LSTMCell(num_hidden, state_is_tuple=True)
+#cell = tf.nn.rnn_cell.LSTMCell(num_hidden, state_is_tuple=True)
+cell =  tf.contrib.rnn.LSTMCell(num_hidden)
 
 with tf.variable_scope('vs'):
     try:
@@ -165,7 +166,8 @@ prediction = tf.nn.softmax(tf.matmul(last, weight) + bias)
 #error = tf.reduce_mean(tf.cast(mistakes, tf.float32))
 
 #prediction = tf.matmul(last, weight) + bias
-cost = tf.reduce_sum(tf.square(tf.sub(prediction, target)))
+# cost = tf.reduce_sum(tf.square(tf.sub(prediction, target)))
+cost = tf.losses.mean_squared_error(prediction, target)
 optimizer = tf.train.AdamOptimizer().minimize(cost)
 
 tf.summary.scalar('cost', cost)
@@ -179,7 +181,8 @@ with tf.Session() as s:
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(s, coord=coord)
 
-    summary_writer = tf.train.SummaryWriter('./logs/', s.graph)
+    # summary_writer = tf.train.SummaryWriter('./logs/', s.graph)
+    summary_writer = tf.summary.FileWriter('./logs/', s.graph)
 
     try:
         i = 0
