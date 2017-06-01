@@ -1,10 +1,12 @@
-'''Tutorial 1.'''
-'''In this program, a simple mathematical expression is expressed as a graph.'''
+'''Tutorial 1. In this program, a simple mathematical expression is expressed as a graph.'''
+
+# pylint: disable=C0413
+# pylint: disable=C0103
 
 import os
 import tensorflow as tf
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # suppresses warnings
 
 A = tf.placeholder(dtype=tf.float32, shape=None, name='A')
 B = tf.placeholder(dtype=tf.float32, shape=None, name='B')
