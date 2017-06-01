@@ -2,6 +2,7 @@
 
 # pylint: disable=C0413
 # pylint: disable=C0103
+# pylint: disable=E0401
 
 import os
 import tensorflow as tf
@@ -13,12 +14,7 @@ B = tf.constant(value=2.0, dtype=tf.float32)
 
 C = A + B
 
-init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
-
 with tf.Session() as s:
 
-    s.run(init)
+    print(s.run(C))
 
-    c = s.run(C)
-
-    print(c)

@@ -1,7 +1,9 @@
-'''Tutorial 2. In this program, a simple mathematical expression is expressed as a graph.'''
+'''Tutorial 2. In this program, a simple mathematical expression is expressed as a graph. 
+Placeholders are used to provide input.'''
 
 # pylint: disable=C0413
 # pylint: disable=C0103
+# pylint: disable=E0401
 
 import os
 import tensorflow as tf
@@ -13,12 +15,8 @@ B = tf.placeholder(dtype=tf.float32, shape=None, name='B')
 
 C = A + B
 
-init = [tf.global_variables_initializer(), tf.local_variables_initializer()]
-
 with tf.Session() as s:
 
-    s.run(init)
+    print(s.run(C, feed_dict={A: 1.0, B: 2.0}))
 
-    c = s.run(C, feed_dict={A: 1.0, B: 2.0})
 
-    print(c)
