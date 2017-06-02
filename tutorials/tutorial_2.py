@@ -19,4 +19,3 @@ with tf.Session() as s:
 
     print(s.run(C, feed_dict={A: 1.0, B: 2.0}))
 
-
