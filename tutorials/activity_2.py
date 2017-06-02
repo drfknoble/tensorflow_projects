@@ -25,6 +25,9 @@ def setup():
 
 x_data, y_data = setup()
 
+print(x_data)
+print(y_data)
+
 x = tf.placeholder(dtype=tf.float32, shape=[1], name='A')
 y = tf.placeholder(dtype=tf.float32, shape=[1], name='B')
 
