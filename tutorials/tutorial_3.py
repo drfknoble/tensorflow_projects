@@ -1,4 +1,4 @@
-'''Tutorial 2. In this program, a simple mathematical expression is expressed as a graph. 
+'''Tutorial  3. In this program, a simple mathematical expression is expressed as a graph. 
 Placeholders are used to provide input.'''
 
 # pylint: disable=C0413
@@ -10,8 +10,8 @@ import tensorflow as tf
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # suppresses warnings
 
-x = tf.placeholder(dtype=tf.float32, shape=None, name='A')
-y = tf.placeholder(dtype=tf.float32, shape=None, name='B')
+x = tf.placeholder(dtype=tf.float32, shape=None, name='x')
+y = tf.placeholder(dtype=tf.float32, shape=None, name='y')
 
 M = tf.Variable(initial_value=1.0, dtype=tf.float32)
 c = tf.Variable(initial_value=0.1, dtype=tf.float32)
