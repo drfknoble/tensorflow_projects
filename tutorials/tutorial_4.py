@@ -27,11 +27,11 @@ def mlp_layer(in_x, w_shape, b_shape):
 
 with tf.variable_scope('layer_1') as vs:
     h = mlp_layer(x, [1, 3], [3])
+    h = tf.nn.relu(h)
     vs.reuse_variables()
 
 with tf.variable_scope('layer_2') as vs:
     y_ = mlp_layer(h, [3, 1], [1])
-
 
 loss = tf.losses.mean_squared_error(y, y_)
 training = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(loss)
