@@ -1,5 +1,5 @@
-'''Tutorial  3. In this program, a simple mathematical expression is expressed as a graph. 
-Placeholders are used to provide input.'''
+'''Tutorial 3. In this program, a polynomial function's coefficients are tuned using
+gradient descent optimisation. Placeholders are used to provide input.'''
 
 # pylint: disable=C0413
 # pylint: disable=C0103
