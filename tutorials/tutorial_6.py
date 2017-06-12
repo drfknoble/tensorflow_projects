@@ -16,10 +16,10 @@ def read_CSV(filename_queue):
     reader = tf.TextLineReader()
     _, record_string = reader.read(filename_queue)
 
-    record_defaults = [[0], [0]]
-    example, label = tf.decode_csv(record_string, record_defaults)
+    record_defaults = [[0], [0], [0]]
+    col1, col2, col3 = tf.decode_csv(record_string, record_defaults)
 
-    return example, label
+    return tf.stack([col1, col2, col3])
 
 
 def input_pipeline(filenames, batch_size, num_epochs=None):
@@ -27,14 +27,14 @@ def input_pipeline(filenames, batch_size, num_epochs=None):
 
     filename_queue = tf.train.string_input_producer(
         filenames, num_epochs=num_epochs, shuffle=True)
-    example, label = read_CSV(filename_queue)
+    example = read_CSV(filename_queue)
 
     min_after_dequeue = 10000
     capacity = min_after_dequeue + 3 * batch_size
-    example_batch, label_batch = tf.train.batch(
-        [example, label], batch_size=batch_size, capacity=capacity)
+    example_batch = tf.train.batch(
+        [example], batch_size=batch_size, capacity=capacity)
 
-    return example_batch, label_batch
+    return example_batch
 
 
 if not os.path.exists('./data'):
@@ -60,7 +60,7 @@ with tf.Session() as s:
             f = s.run([features])
 
             print(i, f)
- 
+
             i += 1
 
     except tf.errors.OutOfRangeError:
