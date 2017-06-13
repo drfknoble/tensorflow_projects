@@ -17,10 +17,11 @@ def read_CSV(filename_queue):
     _, record_string = reader.read(filename_queue)
 
     record_defaults = [[0], [0], [0]]
-    col1, col2, col3 = tf.decode_csv(record_string, record_defaults)
+    # col1, col2, col3 = tf.decode_csv(record_string, record_defaults)
+    all_cols = tf.decode_csv(record_string, record_defaults)
 
-    return tf.stack([col1, col2, col3])
-
+    # return tf.stack([col1, col2, col3])
+    return all_cols
 
 def input_pipeline(filenames, batch_size, num_epochs=None):
     '''input_pipeline'''
@@ -60,6 +61,10 @@ with tf.Session() as s:
             f = s.run([features])
 
             print(i, f)
+
+            l = s.run([features])
+
+            print(i, l)
 
             i += 1
 
