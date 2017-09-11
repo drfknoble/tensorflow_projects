@@ -1,0 +1,17 @@
+./data/input/validation/labels/label_1400.png
+./data/input/validation/labels/label_1420.png
+./data/input/validation/labels/label_1440.png
+./data/input/validation/labels/label_1460.png
+./data/input/validation/labels/label_1480.png
+./data/input/validation/labels/label_1500.png
+./data/input/validation/labels/label_1520.png
+./data/input/validation/labels/label_1540.png
+./data/input/validation/labels/label_1560.png
+./data/input/validation/labels/label_1580.png
+./data/input/validation/labels/label_1600.png
+./data/input/validation/labels/label_1620.png
+./data/input/validation/labels/label_1640.png
+./data/input/validation/labels/label_1660.png
+./data/input/validation/labels/label_1680.png
+./data/input/validation/labels/label_1700.png
+./data/input/validation/labels/label_1720.png

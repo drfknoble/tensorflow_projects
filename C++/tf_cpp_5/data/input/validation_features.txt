@@ -1,0 +1,17 @@
+./data/input/validation/features/feature_1400.png
+./data/input/validation/features/feature_1420.png
+./data/input/validation/features/feature_1440.png
+./data/input/validation/features/feature_1460.png
+./data/input/validation/features/feature_1480.png
+./data/input/validation/features/feature_1500.png
+./data/input/validation/features/feature_1520.png
+./data/input/validation/features/feature_1540.png
+./data/input/validation/features/feature_1560.png
+./data/input/validation/features/feature_1580.png
+./data/input/validation/features/feature_1600.png
+./data/input/validation/features/feature_1620.png
+./data/input/validation/features/feature_1640.png
+./data/input/validation/features/feature_1660.png
+./data/input/validation/features/feature_1680.png
+./data/input/validation/features/feature_1700.png
+./data/input/validation/features/feature_1720.png
