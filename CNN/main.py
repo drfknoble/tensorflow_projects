@@ -1,7 +1,5 @@
 '''CNN'''
 
-#%%
-
 # pylint: disable=E0401
 # pylint: disable=C0103
 
@@ -198,7 +196,7 @@ labels_list = parse_file(labels_txt_file)
 
 # Here, we define the number of times we read a record file, and what size
 # each batch is.
-num_epochs = 1000
+num_epochs = 2000
 batch_size = 1
 
 # Here, we create handles for reading and writing TFRecord files.
@@ -211,8 +209,8 @@ record = input_pipeline([record_file], num_epochs, batch_size)
 # Here, we define our graph.
 with tf.name_scope('input'):
 
-    x = tf.placeholder(tf.float32, shape=[None, None, None, None], name='x')
-    y = tf.placeholder(tf.float32, shape=[None, None, None, None], name='y')
+    x = tf.placeholder(tf.float32, shape=[None, None, None, 3], name='x')
+    y = tf.placeholder(tf.float32, shape=[None, None, None, 3], name='y')
 
 with tf.name_scope('network'):
 
@@ -295,10 +293,10 @@ with tf.Session() as l:
 
             summary_writer.add_summary(summary, i)
 
-            if i % (num_epochs / 10) == 0:
+            if i % (num_epochs / 100) == 0:
                 print(c)
 
-            if i % 50 == 0:
+            if i % 500 == 0:
                 saver.save(l, './model/main.ckpt', i)
 
             i += 1
@@ -334,7 +332,7 @@ with tf.Session() as f:
             test = f.run(y_, feed_dict)[0]
 
             f_file = f.run(tf.image.encode_png(test))
-            W = open(output_dir + 'test_.png', 'wb+')
+            W = open(output_dir + 'test_0.png', 'wb+')
             W.write(f_file)
             W.close()
 
